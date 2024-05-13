@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split VCF</title>
+</head>
+<body>
+    <h2>Split VCF</h2>
+    <input type="file" id="fileInput" accept=".vcf" multiple>
+    <label for="batchSize">Jumlah Kontak per Set:</label>
+    <input type="number" id="batchSize" value="50" min="1">
+    <button onclick="startProcessing()">Start Processing</button>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        let currentIndex = 0;
+        let contacts = [];
+
+        function startProcessing() {
+            const files = document.getElementById('fileInput').files;
+            if (files.length === 0) {
+                alert('Pilih setidaknya satu file VCF.');
+                return;
+            }
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function(event) {
+                    const text = event.target.result;
+                    const fileName = file.name.replace(/\.[^/.]+$/, ''); // Menghapus ekstensi file dari nama file
+                    const fileContacts = text.split('BEGIN:VCARD');
+                    fileContacts.shift(); // Menghapus elemen kosong dari hasil pembagian
+                    contacts.push({ name: fileName, contacts: fileContacts });
+
+                    if (i === files.length - 1) {
+                        processContacts();
+                    }
+                };
+
+                reader.readAsText(file);
+            }
+        }
+
+        function processContacts() {
+            const batchSize = parseInt(document.getElementById('batchSize').value, 10);
+
+            contacts.forEach(file => {
+                let currentIndex = 0;
+                const fileName = file.name;
+
+                while (currentIndex < file.contacts.length) {
+                    const batchContacts = file.contacts.slice(currentIndex, currentIndex + batchSize);
+                    const combinedContacts = 'BEGIN:VCARD' + batchContacts.join('BEGIN:VCARD');
+                    const startIndex = currentIndex + 1;
+                    const endIndex = currentIndex + batchContacts.length;
+                    const newFileName = `${fileName} ${startIndex}-${endIndex}.vcf`;
+                    downloadFile(combinedContacts, newFileName);
+                    currentIndex += batchSize;
+                }
+            });
+
+            contacts = [];
+            alert('Pemecahan kontak selesai.');
+        }
+
+        function downloadFile(data, filename) {
+            const blob = new Blob([data], { type: 'text/vcard' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+        }
+    </script>
+</body>
+</html>
