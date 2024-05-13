@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CONVERT + ADMIN + NAVY</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Menambahkan jQuery -->
+<script>
+$(document).ready(function(){
+    // Fungsi untuk mengatur nilai input dan elemen lainnya menjadi kosong saat halaman dimuat ulang
+    function resetForm() {
+        $("#fromAdmin").val("");
+        $("#toAdmin").val("");
+        $("#fromNavy").val("");
+        $("#toNavy").val("");
+        $("#fromMember").val("");
+        $("#adminName").val("ADMIN");
+        $("#navyName").val("NAVY");
+        $("#memberName").val("MEMBER");
+        $("#txtFiles").val("");
+    }
+
+    // Panggil fungsi resetForm saat halaman dimuat ulang
+    $(window).on('load', function() {
+        resetForm();
+    });
+
+    $("#convertToVCF").click(function() {
+        convertToVCF();
+    });
+
+    function convertToVCF() {
+        var files = document.getElementById('txtFiles').files;
+        var pom = document.createElement('a'); // Buat elemen a sebelumnya di luar loop
+        pom.style.display = 'none'; // Sembunyikan elemen
+        document.body.appendChild(pom); // Lampirkan ke tubuh dokumen
+
+        var fromAdmin = parseInt($("#fromAdmin").val()); // Ambil nilai dari input "fromAdmin"
+        var toAdmin = parseInt($("#toAdmin").val()); // Ambil nilai dari input "toAdmin"
+        var fromNavy = parseInt($("#fromNavy").val()); // Ambil nilai dari input "fromNavy"
+        var toNavy = parseInt($("#toNavy").val()); // Ambil nilai dari input "toNavy"
+        var fromMember = parseInt($("#fromMember").val()); // Ambil nilai dari input "fromMember"
+
+        // Variabel untuk menyimpan status terakhir nomor urut admin, navy, dan member
+        var adminCount = fromAdmin;
+        var navyCount = fromNavy;
+        var memberCount = 1; // Mulai dari nomor 1
+        
+        // Panggil rekursi untuk mengunduh setiap file secara berurutan
+        downloadFiles(files, 0, adminCount, navyCount, memberCount);
+
+        function downloadFiles(files, index, adminCount, navyCount, memberCount) {
+            if (index < files.length) {
+                var selectedFile = files[index];
+                var originalName = selectedFile.name; // Simpan nama file asli sebelum diganti dengan ekstensi .vcf
+                var name = originalName.replace('.txt', '.vcf'); // Ganti ekstensi file menjadi .vcf
+                var reader = new FileReader();
+                reader.readAsText(selectedFile);
+                reader.onload = function() {
+                    var list1  = this.result.split("\r\n");
+                    var vcfContent = "";
+                    for(var i = 0; i < list1.length; i++) {
+                        if(i < toAdmin) { // Baris 1-6
+                            vcfContent += "BEGIN:VCARD\r\n";
+                            vcfContent += "VERSION:2.1\r\n";
+                            vcfContent += "FN:" + $("#adminName").val() + " " + adminCount + "\r\n"; // Nama kontak diubah menjadi Admin
+                            vcfContent += "TEL;CELL:+" + list1[i] + "\r\n";
+                            vcfContent += "END:VCARD\r\n";
+                            adminCount++;
+                        } else if (i >= toAdmin && i < toNavy) { // Baris 6-28
+                            vcfContent += "BEGIN:VCARD\r\n";
+                            vcfContent += "VERSION:2.1\r\n";
+                            vcfContent += "FN:" + $("#navyName").val() + " " + (navyCount - fromNavy + 1) + "\r\n"; // Nama kontak diubah menjadi Navy dimulai dari 1
+                            vcfContent += "TEL;CELL:+" + list1[i] + "\r\n";
+                            vcfContent += "END:VCARD\r\n";
+                            navyCount++;
+                        } else { // Baris 29 ke atas
+                            vcfContent += "BEGIN:VCARD\r\n";
+                            vcfContent += "VERSION:2.1\r\n";
+                            vcfContent += "FN:" + $("#memberName").val() + " " + memberCount + "\r\n"; // Nama kontak diubah menjadi Member dimulai dari 1
+                            vcfContent += "TEL;CELL:+" + list1[i] + "\r\n";
+                            vcfContent += "END:VCARD\r\n";
+                            memberCount++;
+                        }
+                    }
+                    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(vcfContent));
+                    pom.setAttribute('download', name);
+                    pom.click(); // Jalankan klik setelah selesai iterasi
+
+                    // Panggil rekursi untuk mengunduh file berikutnya
+                    downloadFiles(files, index + 1, fromAdmin, fromNavy, 1); // Set nomor urut kembali mulai dari awal untuk member
+                }
+            }
+        }
+    }
+});
+</script>
+<link rel="stylesheet" href="styles.css"> <!-- Menghubungkan file CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>CONVERT VCF ADMIN + NAVY + MEMBER</h1>
+        <div class="form-group">
+            <label for="fromAdmin">Admin (From - To):</label>
+            <input type="number" id="fromAdmin" placeholder="From"> -
+            <input type="number" id="toAdmin" placeholder="To">
+            <input type="text" id="adminName" placeholder="Name">
+        </div>
+        <div class="form-group">
+            <label for="fromNavy">Navy (From - To):</label>
+            <input type="number" id="fromNavy" placeholder="From"> -
+            <input type="number" id="toNavy" placeholder="To">
+            <input type="text" id="navyName" placeholder="Name">
+        </div>
+        <div class="form-group">
+            <label for="fromMember">Member (From):</label>
+            <input type="number" id="fromMember" placeholder="From">
+            <input type="text" id="memberName" placeholder="Name">
+        </div>
+        <div class="form-group">
+            <input type="file" id="txtFiles" accept=".txt" multiple>
+        </div>
+        <button id="convertToVCF">Convert to VCF</button>
+    </div>
+</body>
+</html>

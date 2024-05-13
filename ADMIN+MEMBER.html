@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CONVERT + ADMIN + MEMBER</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Menambahkan jQuery -->
+<script>
+$(document).ready(function(){
+    // Mengosongkan nilai input dan elemen lain saat halaman dimuat ulang
+    $(window).on('load', function() {
+        $("#adminFrom").val("");
+        $("#adminTo").val("");
+        $("#memberFrom").val("");
+        $("#adminName").val("");
+        $("#memberName").val("");
+        $("#txtFiles").val("");
+    });
+
+    $("#convertToVCF").click(function() {
+        convertToVCF();
+    });
+
+    function convertToVCF() {
+        var files = document.getElementById('txtFiles').files;
+        var adminFrom = parseInt($("#adminFrom").val()); // Ambil nilai dari input "adminFrom"
+        var adminTo = parseInt($("#adminTo").val()); // Ambil nilai dari input "adminTo"
+        var memberFrom = parseInt($("#memberFrom").val()); // Ambil nilai dari input "memberFrom"
+        
+        for (var i = 0; i < files.length; i++) {
+            var selectedFile = files[i];
+            var originalName = selectedFile.name; // Simpan nama file asli sebelum diganti dengan ekstensi .vcf
+            var name = originalName.replace('.txt', '.vcf'); // Ganti ekstensi file menjadi .vcf
+            var reader = new FileReader();
+            reader.readAsText(selectedFile);
+            reader.onload = (function(filename) { // Closure untuk memastikan penggunaan nama file yang benar
+                return function() {
+                    var list1  = this.result.split("\r\n");
+                    var vcfContent = "";
+                    var adminCount = adminFrom - 1; // Mulai dari nomor sebelumnya
+                    var memberCount = 0; // Mulai dari nomor 0
+                    for(var i = 0; i < list1.length; i++) {
+                        vcfContent += "BEGIN:VCARD\r\n";
+                        vcfContent += "VERSION:2.1\r\n";
+                        // Menentukan nama kontak berdasarkan nomor urut
+                        if (i < adminTo) {
+                            adminCount++;
+                            vcfContent += "FN:" + $("#adminName").val() + " " + adminCount + "\r\n"; // Nama kontak untuk admin
+                        } else {
+                            memberCount++;
+                            vcfContent += "FN:" + $("#memberName").val() + " " + memberCount + "\r\n"; // Nama kontak untuk member
+                        }
+                        vcfContent += "TEL;CELL:+" + list1[i] + "\r\n";
+                        vcfContent += "END:VCARD\r\n";
+                    }
+                    download(filename, vcfContent); // Menggunakan filename yang sesuai
+                };
+            })(name);
+        }
+    }
+
+    function download(filename, text) {
+        var pom = document.createElement('a');
+        pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        pom.setAttribute('download', filename);
+        pom.style.display = 'none';
+        document.body.appendChild(pom);
+        if (document.createEvent) {
+            var event = document.createEvent('MouseEvents');
+            event.initEvent('click', true, true);
+            pom.dispatchEvent(event);
+        } else {
+            pom.click();
+        }
+        document.body.removeChild(pom); // Hapus elemen setelah selesai
+    }
+});
+</script>
+<link rel="stylesheet" href="styles.css"> <!-- Menghubungkan file CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Convert TXT to VCF</h1>
+        <div class="form-group">
+            <label class="label" for="adminFrom">BARIS ADMIN DARI NO:</label>
+            <input type="number" id="adminFrom" class="input" value="">
+        </div>
+        <div class="form-group">
+            <label class="label" for="adminTo">BARIS ADMIN SAMPAI NO:</label>
+            <input type="number" id="adminTo" class="input" value="">
+        </div>
+        <div class="form-group">
+            <label class="label" for="adminName">NAMA ADMIN:</label>
+            <input type="text" id="adminName" class="input" value="">
+        </div>
+        <div class="form-group">
+            <label class="label" for="memberFrom">BARIS MEMBER DARI NO:</label>
+            <input type="number" id="memberFrom" class="input" value="">
+        </div>
+        <div class="form-group">
+            <label class="label" for="memberName">NAMA MEMBER:</label>
+            <input type="text" id="memberName" class="input" value="">
+        </div>
+        <div class="form-group">
+            <label class="label" for="txtFiles">PILIH FILE TXT:</label>
+            <input type="file" id="txtFiles" class="file-input" accept=".txt" multiple>
+        </div>
+        <button id="convertToVCF" class="btn">Convert</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CONVERT TANPA ADMIN</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Menambahkan jQuery -->
+<script src="script.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<script>
+$(document).ready(function(){
+    $("#convertToVCF").click(function() {
+        convertToVCF();
+    });
+
+    function convertToVCF() {
+        var files = document.getElementById('txtFiles').files;
+        var fileCount = files.length;
+        var contactName = $("#contactName").val(); // Mengambil nama kontak dari input
+        for (var i = 0; i < fileCount; i++) {
+            var selectedFile = files[i];
+            var reader = new FileReader();
+            reader.fileName = selectedFile.name; // Simpan nama file asli sebelum dikonversi
+            reader.readAsText(selectedFile);
+            reader.onload = function(event) {
+                var list1  = event.target.result.split("\r\n");
+                var vcfContent = "";
+                for(var j = 0; j < list1.length; j++) {
+                    vcfContent += "BEGIN:VCARD\r\n";
+                    vcfContent += "VERSION:2.1\r\n";
+                    // Menggunakan nama kontak yang diinput oleh pengguna dengan nomor urut di belakang
+                    vcfContent += "FN:" + contactName + " " + (j + 1) + "\r\n";
+                    vcfContent += "TEL;CELL:+" + list1[j] + "\r\n";
+                    vcfContent += "END:VCARD\r\n";
+                }
+                // Menggunakan nama file asli untuk file vcf
+                var newFileName = this.fileName.replace('.txt', '.vcf');
+                download(newFileName, vcfContent);
+            }
+        }
+    }
+
+    function download(filename, text) {
+        var pom = document.createElement('a');
+        pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        pom.setAttribute('download', filename);
+        if (document.createEvent) {
+            var event = document.createEvent('MouseEvents');
+            event.initEvent('click', true, true);
+            pom.dispatchEvent(event);
+        } else {
+            pom.click();
+        }
+    }
+});
+</script>
+</head>
+<body>
+    <div class="container">
+        <h1>Convert TXT to VCF</h1>
+        <label for="contactName">Nama Kontak:</label>
+        <input type="text" id="contactName" value=""> <!-- Input untuk nama kontak -->
+        <br><br>
+        <input type="file" id="txtFiles" accept=".txt" multiple> <!-- Mengizinkan pengguna untuk memilih beberapa file -->
+        <button id="convertToVCF">Convert to VCF</button>
+    </div>
+</body>
+</html>

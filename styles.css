@@ -1,0 +1,335 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('https://images.hdqwalls.com/download/japan-minimal-art-4k-be-2560x1440.jpg') no-repeat center center fixed; /* Gambar latar belakang */
+    background-size: cover;
+    animation: fadeIn 1s ease; /* Animasi fade in */
+}
+
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7); /* Warna latar belakang form */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    animation: slideIn 1s ease; /* Animasi slide in */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ffffff; /* Warna teks judul */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ffffff; /* Warna teks label */
+}
+
+input[type="text"],
+input[type="number"] {
+    width: calc(33.33% - 10px);
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+input[type="file"] {
+    width: calc(100% - 10px);
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('https://images.hdqwalls.com/download/japan-minimal-art-4k-be-2560x1440.jpg') no-repeat center center fixed; /* Gambar latar belakang */
+    background-size: cover;
+}
+
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7); /* Warna latar belakang form */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ffffff; /* Warna teks judul */
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ffffff; /* Warna teks label */
+}
+
+input[type="text"],
+input[type="file"] {
+    width: calc(100% - 10px);
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: rgba(0, 0, 0, 0.7); /* Ubah opacity di sini */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.input {
+    width: calc(50% - 5px); /* Menyamakan ukuran antara input-admin dan input-member */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.file-input {
+    width: calc(100% - 115px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.bg {
+    background-image: url('https://www.bing.com/images/search?view=detailV2&ccid=NV5ubMzu&id=F5F42EDC5602E65DA74F8482EF24657241F76195&thid=OIP.NV5ubMzuxIfoSHvby_GSCAHaEK&mediaurl=https%3a%2f%2fimages.hdqwalls.com%2fdownload%2fjapan-minimal-art-4k-be-2560x1440.jpg&exph=1440&expw=2560&q=Simple+Art+Wallpaper&simid=608038151413316965&FORM=IRPRST&ck=A2F7CECF2F5787D2DD1EB579105712D9&selectedIndex=32&itb=0');
+    background-size: cover;
+    background-position: center;
+}
+
+.container {
+    max-width: 700px;
+    margin: 50px auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap; /* Memastikan kolom-kolom dapat memulai baris baru jika tidak cukup ruang */
+}
+
+.label {
+    display: block;
+    font-weight: bold;
+    margin-right: 10px;
+    flex: 0 0 30%; /* Menentukan lebar tetap untuk label */
+}
+
+.input {
+    flex: 1; /* Menggunakan ruang yang tersedia */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.file-input {
+    width: calc(100% - 115px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.bg {
+    background-image: url('https://images.hdqwalls.com/download/japan-minimal-art-4k-be-2560x1440.jpg');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 500px; /* Menyesuaikan lebar kontainer */
+    margin: 50px auto;
+    background-color: rgba(0, 0, 0, 0.7); /* Warna latar belakang */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fff; /* Warna teks */
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.label {
+    display: inline-block;
+    width: 150px; /* Lebar label */
+    font-weight: bold;
+    color: #fff; /* Warna teks */
+}
+
+.input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.file-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.bg {
+    background-image: url('https://images.hdqwalls.com/download/japan-minimal-art-4k-be-2560x1440.jpg'); /* Gambar latar belakang */
+    background-size: cover;
+    background-position: center;
+}

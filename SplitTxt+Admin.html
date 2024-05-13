@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BAGI FILE + ADMIN</title>
+<link rel="stylesheet" href="styles.css"> <!-- Menambahkan CSS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Menambahkan jQuery -->
+<script src="SPLIT.js"></script> <!-- Memuat skrip JavaScript -->
+</head>
+<body class="bg">
+    <div class="container">
+        <h1>SPLIT TXT YANG BERISI ADMIN atau NAVY</h1>
+        <div class="form-group">
+            <label for="startNumber" class="label">Nomor baris yang dipertahankan:</label>
+            <input type="number" id="startNumber" class="input" value=""> <!-- Input untuk nomor awal -->
+            <label for="chunkSize" class="label">Jumlah Nomor Setiap Teks Baru:</label>
+            <input type="number" id="chunkSize" class="input" value=""> <!-- Input untuk jumlah nomor setiap teks baru -->
+        </div>
+        <div class="form-group">
+            <label for="fileNamePrefix" class="label">Awalan Nama File Baru:</label>
+            <input type="text" id="fileNamePrefix" class="input" value=""> <!-- Input untuk awalan nama file baru -->
+        </div>
+        <div class="form-group">
+            <label for="startFileNumber" class="label">Nomor Awal File:</label>
+            <input type="number" id="startFileNumber" class="input" value=""> <!-- Input untuk nomor awal file baru -->
+        </div>
+        <div class="form-group">
+            <label for="txtFile" class="label">Select TXT Files:</label>
+            <input type="file" id="txtFile" class="file-input" accept=".txt" multiple> <!-- Mengizinkan pengguna untuk memilih beberapa file -->
+        </div>
+        <button id="splitTXT" class="btn">Split TXT File</button>
+    </div>
+</body>
+</html>

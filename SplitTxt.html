@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BAGI FILE TANPA ADMIN</title>
+<link rel="stylesheet" href="styles.css"> <!-- Menghubungkan CSS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Menambahkan jQuery -->
+<script>
+$(document).ready(function(){
+    // Saat dokumen selesai dimuat, kosongkan konten input
+    $("#startNumber").val('');
+    $("#chunkSize").val('');
+    $("#fileNamePrefix").val('');
+
+    $("#splitTXT").click(function() {
+        splitTXTFile();
+    });
+
+    function splitTXTFile() {
+        var files = document.getElementById('txtFile').files;
+        var chunkSize = parseInt($("#chunkSize").val()); // Jumlah nomor dalam setiap file teks yang baru
+        var partCounter = parseInt($("#startNumber").val()); // Mengambil nomor awal dari input
+        var fileNamePrefix = $("#fileNamePrefix").val(); // Mengambil awalan nama file dari input
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = function() {
+                var numbers = this.result.split("\r\n"); // Memisahkan nomor-nomor dalam file teks
+                
+                for (var j = 0; j < numbers.length; j += chunkSize) {
+                    var chunk = numbers.slice(j, j + chunkSize);
+                    var newFileName = fileNamePrefix + ' ' + partCounter + '.txt' ; // Membuat nama file teks yang baru
+                    var newContent = chunk.join("\r\n");
+                    download(newFileName, newContent);
+                    partCounter++;
+                }
+            }
+        }
+    }
+
+    function download(filename, text) {
+        var pom = document.createElement('a');
+        pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        pom.setAttribute('download', filename);
+        if (document.createEvent) {
+            var event = document.createEvent('MouseEvents');
+            event.initEvent('click', true, true);
+            pom.dispatchEvent(event);
+        } else {
+            pom.click();
+        }
+    }
+});
+</script>
+</head>
+<body class="bg"> <!-- Menggunakan background dari CSS -->
+    <div class="container">
+        <h1>Split TXT File</h1>
+        <div class="form-group">
+            <label for="chunkSize" class="label">Jumlah nomor pada setiap file baru:</label>
+            <input type="number" id="chunkSize" class="input" value=""> <!-- Input untuk jumlah nomor pada setiap file baru -->
+        </div>
+        <div class="form-group">
+            <label for="fileNamePrefix" class="label">Nama file baru yang dibuat:</label>
+            <input type="text" id="fileNamePrefix" class="input" value=""> <!-- Input untuk awalan nama file baru -->
+        </div>
+        <div class="form-group">
+            <label for="startNumber" class="label">Nomor file (Bagian Belakang Nama):</label>
+            <input type="number" id="startNumber" class="input" value=""> <!-- Input untuk nomor awal -->
+        </div>
+        <div class="form-group">
+            <label for="txtFile" class="label">Pilih file txt:</label>
+            <input type="file" id="txtFile" class="file-input" accept=".txt" multiple> <!-- Mengizinkan pengguna untuk memilih beberapa file -->
+        </div>
+        <button id="splitTXT" class="btn">Split TXT File</button>
+    </div>
+</body>
+</html>
