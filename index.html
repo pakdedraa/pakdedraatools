@@ -12,6 +12,7 @@
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
+            background-position: center;
             font-family: Arial, sans-serif;
             color: #fff;
             margin: 0;
@@ -38,13 +39,14 @@
             background-color: transparent;
             color: #fff;
             border: 2px solid #fff;
-            padding: 10px 20px;
+            padding: 15px 30px;
             border-radius: 5px;
             cursor: pointer;
             margin: 10px;
             transition: background-color 0.3s ease, color 0.3s ease;
             position: relative;
             overflow: hidden;
+            width: 45%;
         }
 
         .custom-btn::before {
@@ -85,19 +87,15 @@
             margin: 5px 0;
         }
 
-        /* Menyesuaikan tata letak tombol pada berbagai ukuran layar */
-        @media screen and (max-width: 992px) {
-            .custom-btn {
-                margin: 10px 5px;
-                flex: 0 0 45%;
-                max-width: 45%;
+        /* Menyesuaikan tata letak tombol pada perangkat dengan lebar layar kecil */
+        @media screen and (max-width: 576px) {
+            body {
+                background-size: cover;
+                background-position: top;
             }
-        }
-
-        @media screen and (max-width: 768px) {
             .custom-btn {
-                flex: 0 0 100%;
-                max-width: 100%;
+                width: 90%;
+                margin: 5px;
             }
         }
     </style>
@@ -111,19 +109,11 @@
             </div>
         </div>
         <div class="row btn-container">
-            <div class="col-md-4 text-center">
+            <div class="col-md-12 text-center">
                 <button class="custom-btn" onclick="window.location.href='ADMIN+MEMBER.html'">ADMIN + MEMBER</button>
-            </div>
-            <div class="col-md-4 text-center">
                 <button class="custom-btn" onclick="window.location.href='ADMIN+NAVY+MEMBER.html'">ADMIN + NAVY + MEMBER</button>
-            </div>
-            <div class="col-md-4 text-center">
                 <button class="custom-btn" onclick="window.location.href='MEMBER.html'">MEMBER</button>
-            </div>
-            <div class="col-md-6 text-center">
                 <button class="custom-btn" onclick="window.location.href='SplitTxt+Admin.html'">SPLIT TXT + ADMIN</button>
-            </div>
-            <div class="col-md-6 text-center">
                 <button class="custom-btn" onclick="window.location.href='SplitTxt.html'">SPLIT TXT</button>
             </div>
         </div>
