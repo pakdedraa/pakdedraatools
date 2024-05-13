@@ -84,6 +84,22 @@
         .attention p {
             margin: 5px 0;
         }
+
+        /* Menyesuaikan tata letak tombol pada berbagai ukuran layar */
+        @media screen and (max-width: 992px) {
+            .custom-btn {
+                margin: 10px 5px;
+                flex: 0 0 45%;
+                max-width: 45%;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .custom-btn {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 
@@ -110,6 +126,7 @@
             <div class="col-md-6 text-center">
                 <button class="custom-btn" onclick="window.location.href='SplitTxt.html'">SPLIT TXT</button>
             </div>
+        </div>
     </div>
 </body>
 
