@@ -1,111 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CONVERT + ADMIN + MEMBER</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Menambahkan jQuery -->
-<script>
-$(document).ready(function(){
-    // Mengosongkan nilai input dan elemen lain saat halaman dimuat ulang
-    $(window).on('load', function() {
-        $("#adminFrom").val("");
-        $("#adminTo").val("");
-        $("#memberFrom").val("");
-        $("#adminName").val("");
-        $("#memberName").val("");
-        $("#txtFiles").val("");
-    });
-
-    $("#convertToVCF").click(function() {
-        convertToVCF();
-    });
-
-    function convertToVCF() {
-        var files = document.getElementById('txtFiles').files;
-        var adminFrom = parseInt($("#adminFrom").val()); // Ambil nilai dari input "adminFrom"
-        var adminTo = parseInt($("#adminTo").val()); // Ambil nilai dari input "adminTo"
-        var memberFrom = parseInt($("#memberFrom").val()); // Ambil nilai dari input "memberFrom"
-        
-        for (var i = 0; i < files.length; i++) {
-            var selectedFile = files[i];
-            var originalName = selectedFile.name; // Simpan nama file asli sebelum diganti dengan ekstensi .vcf
-            var name = originalName.replace('.txt', '.vcf'); // Ganti ekstensi file menjadi .vcf
-            var reader = new FileReader();
-            reader.readAsText(selectedFile);
-            reader.onload = (function(filename) { // Closure untuk memastikan penggunaan nama file yang benar
-                return function() {
-                    var list1  = this.result.split("\r\n");
-                    var vcfContent = "";
-                    var adminCount = adminFrom - 1; // Mulai dari nomor sebelumnya
-                    var memberCount = 0; // Mulai dari nomor 0
-                    for(var i = 0; i < list1.length; i++) {
-                        vcfContent += "BEGIN:VCARD\r\n";
-                        vcfContent += "VERSION:2.1\r\n";
-                        // Menentukan nama kontak berdasarkan nomor urut
-                        if (i < adminTo) {
-                            adminCount++;
-                            vcfContent += "FN:" + $("#adminName").val() + " " + adminCount + "\r\n"; // Nama kontak untuk admin
-                        } else {
-                            memberCount++;
-                            vcfContent += "FN:" + $("#memberName").val() + " " + memberCount + "\r\n"; // Nama kontak untuk member
-                        }
-                        vcfContent += "TEL;CELL:+" + list1[i] + "\r\n";
-                        vcfContent += "END:VCARD\r\n";
-                    }
-                    download(filename, vcfContent); // Menggunakan filename yang sesuai
-                };
-            })(name);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TXT to VCF Converter</title>
+    <style>
+        body {
+            background: rgba(0, 0, 0, 0.8); /* Latar belakang hitam transparan */
+            color: white; /* Warna teks putih untuk kontras */
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-    }
-
-    function download(filename, text) {
-        var pom = document.createElement('a');
-        pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-        pom.setAttribute('download', filename);
-        pom.style.display = 'none';
-        document.body.appendChild(pom);
-        if (document.createEvent) {
-            var event = document.createEvent('MouseEvents');
-            event.initEvent('click', true, true);
-            pom.dispatchEvent(event);
-        } else {
-            pom.click();
+        .container {
+            background: rgba(255, 255, 255, 0.1); /* Latar belakang putih transparan */
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px; /* Lebar tetap untuk kesederhanaan */
         }
-        document.body.removeChild(pom); // Hapus elemen setelah selesai
-    }
-});
-</script>
-<link rel="stylesheet" href="styles.css"> <!-- Menghubungkan file CSS -->
+        h1 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        input[type="text"], input[type="file"] {
+            margin: 5px 0;
+            padding: 5px;
+            width: calc(100% - 10px);
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50; /* Warna hijau */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #45a049; /* Warna hijau lebih gelap saat dihover */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Convert TXT to VCF</h1>
-        <div class="form-group">
-            <label class="label" for="adminFrom">BARIS ADMIN DARI NO:</label>
-            <input type="number" id="adminFrom" class="input" value="">
-        </div>
-        <div class="form-group">
-            <label class="label" for="adminTo">BARIS ADMIN SAMPAI NO:</label>
-            <input type="number" id="adminTo" class="input" value="">
-        </div>
-        <div class="form-group">
-            <label class="label" for="adminName">NAMA ADMIN:</label>
-            <input type="text" id="adminName" class="input" value="">
-        </div>
-        <div class="form-group">
-            <label class="label" for="memberFrom">BARIS MEMBER DARI NO:</label>
-            <input type="number" id="memberFrom" class="input" value="">
-        </div>
-        <div class="form-group">
-            <label class="label" for="memberName">NAMA MEMBER:</label>
-            <input type="text" id="memberName" class="input" value="">
-        </div>
-        <div class="form-group">
-            <label class="label" for="txtFiles">PILIH FILE TXT:</label>
-            <input type="file" id="txtFiles" class="file-input" accept=".txt" multiple>
-        </div>
-        <button id="convertToVCF" class="btn">Convert</button>
+        <h1>Convert Admin + Member</h1>
+        <form id="converterForm">
+            <label for="adminLabel">Nama Admin:</label>
+            <input type="text" id="adminLabel" value="admin">
+            <label for="memberLabel">Nama Member:</label>
+            <input type="text" id="memberLabel" value="member">
+            <input type="file" id="fileInput" accept=".txt" multiple>
+            <button type="button" onclick="convertFile()">Convert</button>
+        </form>
     </div>
+
+    <script>
+        function convertFile() {
+            const fileInput = document.getElementById('fileInput');
+            const adminLabel = document.getElementById('adminLabel').value || "admin";
+            const memberLabel = document.getElementById('memberLabel').value || "member";
+
+            if (fileInput.files.length === 0) {
+                alert('Please select at least one file!');
+                return;
+            }
+
+            Array.from(fileInput.files).forEach(file => {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const text = e.target.result;
+                    const lines = text.split('\n');
+                    let vcfContent = "";
+                    let isMember = false;
+                    let adminCount = 1;
+                    let memberCount = 1;
+
+                    lines.forEach(line => {
+                        if (line.trim() === "") {
+                            isMember = true; // Switch to member after first blank line
+                            return;
+                        }
+
+                        const name = isMember 
+                            ? `${memberLabel} ${memberCount++}` 
+                            : `${adminLabel} ${adminCount++}`;
+                        const phoneNumber = line.trim().replace(/^0/, "+0"); // Add "+" to the beginning of the number
+                        if (line.trim() !== "" && !line.startsWith('+')) {
+                            vcfContent += `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:+${phoneNumber}\nEND:VCARD\n`;
+                        } else if (line.trim() !== "") {
+                            vcfContent += `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:${phoneNumber}\nEND:VCARD\n`;
+                        }
+                    });
+
+                    const blob = new Blob([vcfContent], { type: 'text/vcard' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    const fileName = file.name.replace('.txt', '.vcf'); // Keep the original file name but change the extension to .vcf
+                    a.href = url;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+
+                reader.readAsText(file);
+            });
+        }
+
+        // Reset fields on page refresh
+        window.onload = function() {
+            document.getElementById('adminLabel').value = '';
+            document.getElementById('memberLabel').value = '';
+            document.getElementById('fileInput').value = '';
+        };
+    </script>
 </body>
 </html>
