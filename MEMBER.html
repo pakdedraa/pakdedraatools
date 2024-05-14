@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CONVERT TANPA ADMIN</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Menambahkan jQuery -->
-<script src="script.js"></script>
 <link rel="stylesheet" href="styles.css">
-</head>
 <script>
 $(document).ready(function(){
     $("#convertToVCF").click(function() {
@@ -27,11 +25,13 @@ $(document).ready(function(){
                 var list1  = event.target.result.split("\r\n");
                 var vcfContent = "";
                 for(var j = 0; j < list1.length; j++) {
+                    var cleanedNumber = list1[j].replace(/[^\d]/g, ''); // Hanya menyisakan angka
+                    if (cleanedNumber === "") continue; // Lewatkan baris jika kosong setelah pembersihan
                     vcfContent += "BEGIN:VCARD\r\n";
                     vcfContent += "VERSION:2.1\r\n";
                     // Menggunakan nama kontak yang diinput oleh pengguna dengan nomor urut di belakang
                     vcfContent += "FN:" + contactName + " " + (j + 1) + "\r\n";
-                    vcfContent += "TEL;CELL:+" + list1[j] + "\r\n";
+                    vcfContent += "TEL;CELL:+" + cleanedNumber + "\r\n";
                     vcfContent += "END:VCARD\r\n";
                 }
                 // Menggunakan nama file asli untuk file vcf
