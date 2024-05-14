@@ -59,8 +59,9 @@
 
                     for (let i = 0; i < lines.length; i++) {
                         const line = lines[i].trim();
+                        const cleanedLine = line.replace(/[^\d]+/g, ''); // Hanya menyisakan angka
 
-                        if (!line) {
+                        if (!cleanedLine) {
                             if (!adminAdded) {
                                 adminAdded = true;
                             } else if (adminAdded && !navyAdded) {
@@ -71,7 +72,7 @@
                             continue;
                         }
 
-                        const formattedLine = `+${line}`;
+                        const formattedLine = `+${cleanedLine}`;
 
                         if (!adminAdded) {
                             adminCount++;
@@ -92,7 +93,7 @@
 
                     const downloadLink = document.createElement('a');
                     downloadLink.href = vcfUrl;
-                    downloadLink.download = file.name.replace(/\.[^/.]+$/, "") + '_contacts.vcf'; // Menambahkan nama file asal
+                    downloadLink.download = file.name.replace(/\.[^/.]+$/, "") + '.vcf'; // Menambahkan nama file asal
                     downloadLink.style.display = 'none';
                     document.body.appendChild(downloadLink);
                     downloadLink.click();
