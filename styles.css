@@ -333,3 +333,43 @@ h1 {
     background-size: cover;
     background-position: center;
 }
+
+body {
+    background: rgba(0, 0, 0, 0.8); /* Latar belakang hitam transparan */
+    color: white; /* Warna teks putih untuk kontras */
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.1); /* Latar belakang putih transparan */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+input[type="text"], input[type="file"] {
+    margin: 10px 0;
+    padding: 5px;
+    width: calc(100% - 20px);
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Warna hijau */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #45a049; /* Warna hijau lebih gelap saat dihover */
+}
