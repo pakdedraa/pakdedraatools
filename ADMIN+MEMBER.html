@@ -94,15 +94,15 @@
                             return;
                         }
 
+                        const cleanedLine = line.replace(/[^\d]/g, ''); // Hanya menyisakan angka
+                        if (cleanedLine === "") return; // Skip lines that result in empty string
+
                         const name = isMember 
                             ? `${memberLabel} ${memberCount++}` 
                             : `${adminLabel} ${adminCount++}`;
-                        const phoneNumber = line.trim().replace(/^0/, "+0"); // Add "+" to the beginning of the number
-                        if (line.trim() !== "" && !line.startsWith('+')) {
-                            vcfContent += `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:+${phoneNumber}\nEND:VCARD\n`;
-                        } else if (line.trim() !== "") {
-                            vcfContent += `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:${phoneNumber}\nEND:VCARD\n`;
-                        }
+                        const phoneNumber = `+${cleanedLine}`; // Add "+" to the beginning of the number
+
+                        vcfContent += `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:${phoneNumber}\nEND:VCARD\n`;
                     });
 
                     const blob = new Blob([vcfContent], { type: 'text/vcard' });
